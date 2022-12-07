@@ -1,0 +1,24 @@
+# Untuk apa annotation ?
+# - Annotation mirip dengan label, hanya tidak dapat di filter seperti label
+# - Biasanaya annotation digunakan untuk memberi informasi tambahan dalam ukuran besar
+# - Annotation bisa menampung informasi sampai 256kb
+
+# Menambahkan annotation ke dalam pod
+# - kubectl annotate pod podname key=value
+# - kubectl annotate pod podname key=value --overwrite
+
+apiVersion: v1
+kind: Pod
+metadata:
+  name: pod-name
+  labels:
+    label-key1: label-value1
+  annotations:
+    annotation-key1: annotation-value
+    annotation-key2: annotation value
+spec:
+  containers:
+    - name: container-name
+      image: image-name
+      ports:
+        containerPort: 80

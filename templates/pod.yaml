@@ -1,3 +1,14 @@
+# Membuat pod
+# - kubectl create -f filename.yaml
+
+# Melihat pod
+# - kubectl get pod
+# - kubectl get pod -o wide
+# - kubectl describe pod podname
+
+# Mengakses pod
+# - kubectl port-forward podname portAkses:portPod
+
 apiVersion: v1
 kind: Pod
 metadata: 

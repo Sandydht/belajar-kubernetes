@@ -1,3 +1,17 @@
+# Kenapa butuh label ?
+# - Untuk memberi tanda pada pod
+# - Untuk mengorganisir pod
+# - Memberi informasi tambahan pada pod
+# - Label tidak hanya bisa digunakan pada pod, tapi pada semua resource di Kubernetes, seperti replication controller, replica set, service, dan lain - lain
+
+# Menambahkan label di pod
+# - kubectl create -f filename.yaml
+# - kubectl get pod --show-labels
+
+# Menambah atau mengubah label di pod
+# - kubectl label pod podname key=value
+# - kubectl label pod podname key=value --overwrite
+
 apiVersion: v1
 kind: Pod
 metadata:
