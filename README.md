@@ -8,19 +8,12 @@
 - Sistem ini digunakan untuk membantu developer dan infra engineer untuk me manage ribuan server yand ada di Google
 - Tahun 2014 Google memperkenalkan Kubernetes, Open Source sistem yang berasal dari pengalaman Borg, Omega dan internal sistem lainnya
 
-# Alur Kerja Menggunakan Kubernetes
-```mermaid
-graph LR;
-    Aci((Developer)) --> B[Configuration File]
-    --> C[Kubernetes Master] --> D[Kubernetes Workers]
-```
-
 # Cara Menginstal Kubernetes di Local
 - Menggunakan Docker Desktop
 - Menggunakan Minikube (butuh VirtualBox atau Hyper-V)
   - https://github.com/kubernetes/minikube
 
-# Menginstall Kubectl
+# Menginstal Kubectl
 - https://kubernetes.io/docs/tasks/tools/install-kubectl/
 
 # Referensi
