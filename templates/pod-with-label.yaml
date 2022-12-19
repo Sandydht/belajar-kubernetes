@@ -12,6 +12,9 @@
 # - kubectl label pod podname key=value
 # - kubectl label pod podname key=value --overwrite
 
+# Menghapus pod menggunakan label
+# - kubectl delete pod -l key=value
+
 apiVersion: v1
 kind: Pod
 metadata:

@@ -1,0 +1,35 @@
+# Kapan menggunakan namespace ? 
+# - Ketika resources di Kubernetes sudah terlalu banyak
+# - Ketika butuh memisahkan resources untuk multi tenant, team atau environment
+# - Nama resources bisa sama jika berada di namespace yang berbeda
+
+# Melihat namespace
+# - kubectl get namespaces
+# - kubectl get namespace
+# - kubectl get ns
+
+# Melihat pod di namespace
+# - kubectl get pod --namespace namanamespace
+# - kubectl get pod -n namanamespace
+
+# Membuat namespace
+# - kubectl create -f filename.yaml
+
+# Membuat pod di namespace
+# - kubectl create -f filename.yaml --namespace namanamespace
+
+# Yang perlu diketahui tentang namespace 
+# - Pod dengan nama yang sama boleh berjalan asalkan berada di namespace yang berbeda
+# - Namespace bukanlah cara untuk mengisolasi resource
+# - Walaupun berbeda namespace, pod akan tetap bisa saling berkomunikasi dengan pod lain di namespace yang berbeda
+
+# Menghapus namespace
+# - kubectl delete namespace namanamespace
+
+# Menghapus semua pod di namespace
+# - kubectl delete pod --all --namespace namanamespace
+
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: name-namespace

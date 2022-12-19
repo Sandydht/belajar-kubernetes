@@ -1,3 +1,8 @@
+# Apa itu pod ?
+# - Pod adalah unit terkecil yang bisa di deploy di Kubernetes cluster
+# - Pod berisi satu atau lebih container
+# - Secara sederhana pod adalah aplikasi kita yang running di Kubernetes cluster
+
 # Membuat pod
 # - kubectl create -f filename.yaml
 
@@ -8,6 +13,10 @@
 
 # Mengakses pod
 # - kubectl port-forward podname portAkses:portPod
+
+# Menghapus pod
+# - kubectl delete pod podname
+# - kubectl delete pod podname1 podname2 podname3
 
 apiVersion: v1
 kind: Pod
