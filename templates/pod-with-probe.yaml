@@ -1,0 +1,69 @@
+# Sebelum lanjut membahas materi selanjutnya
+# - Materi selanjutnya akan fokus pada Replication Controller dan Replica Set
+# - Namun, sebelumnya kita bahas materi selanjutnya, kita harus mengerti tentan liveness, readiness, dan startup probe di Kubernetes
+
+# Liveness, Readiness, Startup Probe
+# - Kubelet menggunakan liveness probe untuk mengecek kapan perlu me-restart Pod
+# - Misal saat liveness pada Pod tidak merespon kubelet akan secara otomatis me-restart Pod
+# - Kubelet menggunakan readiness probe untuk mengecek apakah Pod siap menerima traffic
+# - Kubelet menggunakan startup probe untuk mengecek apakah Pod sudah berjalan. Jika belum berjalan, maka kubelet tidak akan melakukan pengecekan liveness dan readiness
+# - Startup probe cocok untuk Pod yang membutuhkan proses startup lama, ini dapat digunakan untuk memastikan Pod tidak mati oleh kubelet sebelum selesai berjalan dengan sempurna
+
+# Mekanisme Pengecekan Probe
+# - HTTP Get
+# - TCP Socket
+# - Command Exec
+
+# Melihat detail probe
+# - kubectl get pod
+# - kubectl describe pod podname
+
+# Konfigurasi probe
+# - initialDelaySeconds, waktu setelah container jalan dan dilakukan pengecekan, default nya 0
+# - periodSeconds, seberapa sering pengecekan dilakukan, default nya 10
+# - timeoutSeconds, waktu timeout ketika pengecekan gagal, default 1
+# - successThreshold, minimum dianggap sukses setelah berstatus failure, default 1
+# - failureThreshold, minimum dianggap gagal, default 3
+
+apiVersion: v1
+kind: Pod
+metadata:
+  name: pod-name
+  labels:
+    label-key1: label-value1
+  annotations:
+    annotation-key1: annotation-value
+    annotation-key2: very long annotation value, bla bla bla
+spec:
+  containers:
+    - name: container-name
+      image: image-name
+      ports:
+        - containerPort: 80
+      livenessProbe:
+        httpGet:
+          path: /health
+          port: 80
+        initialDelaySeconds: 0
+        periodSeconds: 10
+        timeoutSeconds: 1
+        successThreshold: 1
+        failureThreshold: 3
+      readinessProbe:
+        httpGet: 
+          path: /
+          port: 80
+        initialDelaySeconds: 0
+        periodSeconds: 10
+        timeoutSeconds: 1
+        successThreshold: 1
+        failureThreshold: 3
+      startupProbe:
+        httpGet:
+          path: /
+          port: 80
+        initialDelaySeconds: 0
+        periodSeconds: 10
+        timeoutSeconds: 1
+        successThreshold: 1
+        failureThreshold: 3

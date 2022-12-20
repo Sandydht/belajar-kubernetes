@@ -1,0 +1,49 @@
+# Match expression
+# - Sebelumnya, jika diperhatikan, untuk selector di replica set kita menggunakan matchLabels, yang artinya selector tersebut cara kerjanya match (sama seperti di replication controller)
+# - Selain menggunakan matchLabels, operasi lain yang bisa digunakan pada selector di replication set adalah menggunakan matchExpression
+
+# Operasi match expression
+# - In, value label harus di value in
+# - NotIn, value label tidak boleh ada di value in
+# - Exists, label harus ada
+# - NotExists, label tidak boleh ada
+
+apiVersion: apps/v1
+kind: ReplicaSet
+metadata:
+  name: replica-set-name
+  labels:
+    label-key1: label-value1
+  annotations:
+    annotation-key1: annotation-value
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      label-key1: label-value1
+    matchExpressions:
+      - key: label-key
+        operator: In
+        values:
+          - label-value1
+          - label-value2
+  template:
+    metadata:
+      name: nama-pod
+      labels:
+        label-key1: label-value1
+    spec:
+      containers:
+        - name: container-name
+          image: image-name
+          ports:
+            - containerPort: 80
+          readinessProbe:
+            httpGet: 
+              path: /
+              port: 80
+            initialDelaySeconds: 0
+            periodSeconds: 10
+            timeoutSeconds: 1
+            successThreshold: 1
+            failureThreshold: 3

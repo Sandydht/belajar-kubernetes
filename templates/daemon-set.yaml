@@ -1,0 +1,57 @@
+# Apa itu daemon set ?
+# - Saat menggunakan replica set atau replication controller, Pod akan dijalankan di Node secara random oleh si Kubernetes
+# - Jika kita ingin menjalankan Pod di setiap Node yang ada di Kubernetes, dan tiap Pod hanya boleh jalan 1 di Node, kita bisa menggunakan daemon set
+# - Secara default daemon set akan menjalankan Pod di setiap Node yang ada di Kubernetes Cluster, kecuali jika kita meminta hanya jalan di Node tertentu
+
+# Contoh kasus penggunaan daemon set
+# - Aplikasi untuk monitoring node
+# - Aplikasi untuk mengambil log di node
+# - Dan sejenisnya
+
+# Membuat daemon set
+# - kubectl create -f filename.yaml
+
+# Melihat daemon set
+# - kubectl get daemonsets
+# - kubectl get daemonset
+
+# Menghapus daemon set
+# - kubectl delete daemonset namadaemonset
+
+apiVersion: apps/v1
+kind: DaemonSet
+metadata:
+  name: daemon-set-name
+  labels:
+    label-key1: label-value1
+  annotations:
+    annotation-key1: annotation-value
+spec:
+  selector:
+    matchLabels:
+      label-key1: label-value1
+    matchExpressions:
+      - key: label-key1
+        operator: In
+        values:
+          - label-value1
+  template:
+    metadata:
+      name: nama-pod
+      labels:
+        label-key1: label-value1
+    spec:
+      containers:
+        - name: container-name
+          image: image-name
+          ports:
+            - containerPort: 80
+          readinessProbe:
+            httpGet: 
+              path: /
+              port: 80
+            initialDelaySeconds: 0
+            periodSeconds: 10
+            timeoutSeconds: 1
+            successThreshold: 1
+            failureThreshold: 3

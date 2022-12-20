@@ -1,0 +1,49 @@
+# Apa itu job ?
+# - Sebelumnya kita hanya membahas tentang Pod yang berjalan tanpa henti
+# - Tapi ada kalanya kita butuh menjalankan perintah yang hanya berjalan sekali, lalu berhenti
+# - Job adalah resource di Kubernetes yang digunakan untuk menjalankan Pod yang hanya butuh berjalan sekali, lalu berhenti
+# - Pada replication controller, replica set, dan daemon set, jika Pod mati, maka secara otomatis Pod akan dijalankan ulang
+# - Berbeda dengan Job. Pada job justru Pod akan mati jika pekerjaannya selesai dilakukan
+
+# Contoh penggunaan job
+# - Aplikasi untuk backup atau restore database
+# - Aplikasi untuk import atau export data
+# - Aplikasi untuk menjalankan proses batch
+# - Dan sejenisnya
+
+# Membuat job
+# - kubectl create -f filename.yaml
+
+# Melihat semua job
+# - kubectl get jobs
+# - kubectl get job
+
+# Menghapus job
+# - kubectl delete job jobname
+
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: job-name
+  labels:
+    label-key1: label-value1
+  annotations:
+    annotation-key1: annotation-value
+spec:
+  completions: 5
+  parallelism: 2
+  selector:
+    matchLabels:
+      label-key1: label-value1
+  template:
+    metadata:
+      name: nama-pod
+      labels:
+        label-key1: label-value1
+    spec:
+      restartPolicy: Never
+      containers:
+        - name: container-name
+          image: image-name
+          ports:
+            - containerPort: 80

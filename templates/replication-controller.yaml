@@ -1,0 +1,56 @@
+# Apa itu replication controller ?
+# - Replication controller bertugas untuk memastikan bahwa Pod selalu berjalan
+# - Jika tiba - tiba Pod mati atau hilang, misal ketika ada Node yang mati. Maka replication controller secara otomatis akan menjalankan Pod yang mati atau hilang tersebut
+# - Replication controller biasanya ditugaskan untuk memanage lebih dari 1 Pod
+# - Replication controller akan memastikan jumlah Pod yang berjalan sesuai dengan yang ditentukan. Jika kurang, maka akan menambah Pod baru, jika lebih maka akan menghapus Pod yang sudah ada
+
+# Isi replication controller
+# - Label selector, sebagai penanda pod
+# - Replica count, jumlah Pod yang seharusnya berjalan
+# - Pod template, template yang digunakan untuk menjalankan Pod
+
+# Melihat replication controller
+# - kubectl get replicationcontrollers
+# - kubectl get replicationcontroller
+# - kubectl get rc
+
+# Sebelum menghapus replication controller
+# - Saat kita menghapus replication controller, maka secara otomatis Pod yang berada pada label selectornya akan ikut terhapus
+# - Jika kita ingin menghapus replication controller, tanpa menghapus Pod yang berada pada label selectornya, kita bisa tambahkan opsi --cascade=false
+
+# Menghapus replication controller
+# - kubectl delete rc namerc
+# - kubectl delete rc namarc --cascade=false
+
+apiVersion: v1
+kind: ReplicationController
+metadata:
+  name: nama-replication-controller
+  labels:
+    label-key1: label-value1
+  annotations:
+    annotation-key1: annotation-value
+spec:
+  replicas: 3
+  selector:
+    label-key1: label-value1
+  template:
+    metadata:
+      name: nama-pod
+      labels:
+        label-key1: label-value1
+    spec:
+      containers:
+        - name: container-name
+          image: image-name
+          ports:
+            - containerPort: 80
+          readinessProbe:
+            httpGet: 
+              path: /
+              port: 80
+            initialDelaySeconds: 0
+            periodSeconds: 10
+            timeoutSeconds: 1
+            successThreshold: 1
+            failureThreshold: 3

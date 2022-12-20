@@ -1,0 +1,48 @@
+# Apa itu replica set ?
+# - Pada awalnya replication controller digunakan untuk menjaga jumlah replica Pod dan me-reschedule ulang Pod yang mati
+# - Namun sekarang, telah dikenalkan resource baru yang bernama replica set
+# - Replica set adalah generasi baru dari replication controller dan digunakan sebagai pengganti replication controller
+# - Replication controller sendiri penggunannya sekarang sudah tidak direkomendasikan
+
+# Replica set VS Replication controller
+# - Replica set memiliki kemampuan hampir mirip dengan replication controller
+# - Namun replica set memiliki label selector yang lebih expressive dibandingkan replication controller yang hanya memiliki fitur label selector secara match
+
+# Melihat replica set
+# - kubectl get replicasets
+# - kubectl get replicaset
+# - kubectl get rs
+
+apiVersion: apps/v1
+kind: ReplicaSet
+metadata:
+  name: replica-set-name
+  labels:
+    label-key1: label-value1
+  annotations:
+    annotation-key1: annotation-value
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      label-key1: label-value1
+  template:
+    metadata:
+      name: nama-pod
+      labels:
+        label-key1: label-value1
+    spec:
+      containers:
+        - name: container-name
+          image: image-name
+          ports:
+            - containerPort: 80
+          readinessProbe:
+            httpGet: 
+              path: /
+              port: 80
+            initialDelaySeconds: 0
+            periodSeconds: 10
+            timeoutSeconds: 1
+            successThreshold: 1
+            failureThreshold: 3
