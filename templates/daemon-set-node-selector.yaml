@@ -1,0 +1,47 @@
+# Kenapa butuh node selector ?
+# - Kadang kita membuat node dengan spesifikasi berbeda dari node biasanya
+# - Misal node yang memiliki GPU, atau dengan hardisk SSD
+# - Dengan node selector, kita bisa meminta Kubernetes untuk menjalankan Pod pada node tertentu
+
+# Menambah label ke node
+# kubectl label node nodename key=value
+
+apiVersion: apps/v1
+kind: DaemonSet
+metadata:
+  name: daemon-set-name
+  labels:
+    label-key1: label-value1
+  annotations:
+    annotation-key1: annotation-value1
+spec:
+  selector:
+    matchLabels:
+      label-key1: label-value1
+    matchExpressions:
+      - key: label-key1
+        operator: In
+        values:
+          - label-value1
+  template:
+    metadata:
+      name: pod-name
+      labels:
+        label-key1: label-value1
+    spec:
+      nodeSelector:
+        hardisk: ssd 
+      containers:
+        - name: container-name
+          image: image-name
+          ports:
+            - containerPort: 80
+          readinessProbe:
+            httpGet:
+              path: /health
+              port: 80
+            initialDelaySeconds: 0
+            periodSeconds: 10
+            failureThreshold: 3
+            successThreshold: 1
+            timeoutSeconds: 1

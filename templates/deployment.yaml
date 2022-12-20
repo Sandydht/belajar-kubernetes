@@ -1,0 +1,13 @@
+# Bagaimana cara update aplikasi ?
+# - Sekarang kita sudah tau bagaimana cara mem package aplikasi kita di Pod
+# - Menggunakan volume
+# - Menggunakan konfigurasi ConfigMap dan Secret
+# - Mengakses Pod
+# - Membuat Pod bisa berkomunikasi dengan Pod lain menggunakan Service
+# - Sekarang pertanyaannya, bagaimana jika kita ingin mengupdate aplikasi kita ?
+
+# Deployment
+# - Update aplikasi secara manual bukanlah hal bijak, kesalahan kecil yang kita lakukan saat update secara manual bisa menyebabkan downtime. Sehingga aplikasi kita tidak bisa diakses
+# - Kubernetes memiliki fitur deployment, yaitu resource untuk melakukan deployment aplikasi dan update aplikasi secara deklaratif menggunakan file konfigurasi
+# - Saat kita membuat deployment, secara otomatis Kubernetes akana membuat replica set, yang mana replica set akan secara otomatis membuat Pod
+# - Membuat deployment hampir sama seperti membuat replication set
