@@ -1,0 +1,34 @@
+# Apa itu service ? 
+# - Service adalah resource di Kubernetes yang digunakan untuk membuat satu gerbang untuk mengakses satu atau lebih Pod
+# - Service memiliki IP address dan Port yang tidak pernah berubah selama service itu ada
+# - Client bisa mengakses service tersebut dan secara otomatis akan meneruskan ke Pod yang ada dibelakang service tersebut
+# - Dengan begini client tidak tahu lokasi tiap Pod, dan Pod bisa bertambah, berkurang, atau berpindah, tanpa harus mengganggu client
+
+# Bagaimana menentukan Pod untuk service ?
+# - Service akan mendistribusikan trafik ke Pod yang ada di belakangnya secara seimbang
+# - Service akan menggunakan label selector untuk mengetahui Pod mana yang ada di belakang service tersebut
+
+# Membuat service
+# - kubectl create -f namefile.yaml
+
+# Melihat service 
+# - kubectl get services
+# - kubectl get service
+
+# Menghapus service 
+# - kubectl delete service servicename
+
+# Mengakses service dari dalam cluster
+# - kubectl exec podname -it -- /bin/sh
+# - curl http://cluster-ip:port/
+
+apiVersion: v1
+kind: Service
+metadata:
+  name: service-name
+spec:
+  selector:
+    label-key1: label-value1
+  ports:
+    - port: 8080
+      targetPort: 80
