@@ -1,0 +1,35 @@
+# Mengekspos service
+# - Kadang ada kebutuhan kita perlu untuk mengekspos service keluar
+# - Tujuannya adalah agar aplikasi dari luar kubernetes cluster bisa mengakses Pod yang berada di belakang service tersebut
+
+# Tipe service
+# Service memiliki beberapa tipe, yaitu:
+# - CluserIp: Mengekspos service di dalam internal kubernetes cluster
+# - ExternalName: Memetakan service ke externalName (misalnya: example.com)
+# - NodePort: Mengekspos service pada setiap IP node dan port yang sama. Kita dapat mengakses service dengan tipe ini, dari luar cluster melalui <NodeIP>:<NodePort>
+# - LoadBalancer: Mengekspos service secara eksternal dengan menggunakan LoadBalancer yang disediakan oleh penyedia layanan cloud
+
+# Cara untuk mengekspos service
+# - Dengan menggunakan NodePort, sehingga Node akan membuka port yang akan meneruskan request ke service yang dituju
+# - Dengan menggunakan LoadBalancer, sehingga service bisa diakses via LoadBalancer, dan LoadBalancer akan meneruskan request ke NodePort dan dilanjutkan ke service
+# - Menggunakan ingress, dimana ingress adalah resource yang memang ditujukan untuk mengekspos service. Namun ingress hanya beroperasi di level HTTP
+
+# Service Load Balancer
+# - Cloud provider seperti Google Cloud atau Amazon Web Service biasanya memiliki cloud load balancer
+# - Kubernetes bisa menggunakan load balancer bawaan dari cloud provider sebagai cara untuk mengekspos service
+# - Load balancer akan melakukan load balancer request ke node port
+# - Sayangnya service load balancer ini tidak bisa di test di local seperti menggunakan minikube
+
+apiVersion: v1
+kind: Service
+metadata:
+  name: service-name
+  labels:
+    label-key1: label-value1
+spec:
+  type: LoadBalancer
+  selector:
+    label-key1: label-value1
+  ports:
+    - port: 80
+      targetPort: 80
