@@ -9,5 +9,50 @@
 # Deployment
 # - Update aplikasi secara manual bukanlah hal bijak, kesalahan kecil yang kita lakukan saat update secara manual bisa menyebabkan downtime. Sehingga aplikasi kita tidak bisa diakses
 # - Kubernetes memiliki fitur deployment, yaitu resource untuk melakukan deployment aplikasi dan update aplikasi secara deklaratif menggunakan file konfigurasi
-# - Saat kita membuat deployment, secara otomatis Kubernetes akana membuat replica set, yang mana replica set akan secara otomatis membuat Pod
+# - Saat kita membuat deployment, secara otomatis Kubernetes akan membuat replica set, yang mana replica set akan secara otomatis membuat Pod
 # - Membuat deployment hampir sama seperti membuat replication set
+
+# Membuat deployment
+# - kubectl apply -f filename.yaml
+
+# Melihat deployment
+# - kubectl get deployments
+# - kubectl describe deployment namadeployment
+
+# Menghapus deployment
+# - kubectl delete deployment namadeployment
+
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: deployment-name
+  labels:
+    label-key1: label-value1
+  annotations:
+    annotation-key1: annotation-value1
+spec:
+  revisionHistoryLimit: 1
+  replicas: 3
+  selector:
+    matchLabels:
+      label-key1: label-value1
+  template:
+    metadata:
+      name: pod-name
+      labels:
+        label-key1: label-value1
+    spec:
+      containers:
+        - name: container-name
+          image: image-name
+          ports:
+            - containerPort: 80
+          readinessProbe:
+            httpGet:
+              path: /health
+              port: 80
+            initialDelaySeconds: 0
+            periodSeconds: 10
+            failureThreshold: 3
+            successThreshold: 1
+            timeoutSeconds: 1

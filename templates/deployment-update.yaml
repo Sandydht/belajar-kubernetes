@@ -1,0 +1,42 @@
+# Update deployment
+# - Untuk update deployment, caranya sangat mudah, kita hanya tinggal gunakan perintah apply lagi untuk mengupdate deployment terbaru
+# - Saat deployment terbaru dieksekusi, secara otomatis deployment akan membuat replica set baru, lalu menyalakan pod baru, setelah pod siap, deployment akan menghapus pod lama secara otomatis
+# - Ini membuat proses update berjalan seamless, dan tidak terjadi downtime
+
+# Update deployment
+# - kubectl apply -f filename.yaml
+
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: deployment-name
+  labels:
+    label-key1: label-value1
+  annotations:
+    annotation-key1: annotation-value1
+spec:
+  revisionHistoryLimit: 1
+  replicas: 3
+  selector:
+    matchLabels:
+      label-key1: label-value1
+  template:
+    metadata:
+      name: pod-name
+      labels:
+        label-key1: label-value1
+    spec:
+      containers:
+        - name: container-name
+          image: image-name
+          ports:
+            - containerPort: 80
+          readinessProbe:
+            httpGet:
+              path: /health
+              port: 80
+            initialDelaySeconds: 0
+            periodSeconds: 10
+            failureThreshold: 3
+            successThreshold: 1
+            timeoutSeconds: 1
