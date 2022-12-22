@@ -1,0 +1,32 @@
+# Volume
+# - Berkas - berkas di dalam container itu tidak permanen, akan terhapus seiring dihapusnya Pod atau container
+# - Volume secara sederhana adalah sebuah direktori yang bisa diakses oleh container - container di Pod
+
+# Jenis - jenis volume
+# Kubernetes mendukung banyak jenis volume, seperti:
+# - emptyDir, direktori sederhana yang kosong
+# - hostPath, digunakan untuk men-sharing direktori di node ke pod
+# - gitRepo, direktori yang dibuat pertama kali dengan meng-clone git repository
+# - nfs, sharing network file system
+# - dan lain - lain
+
+apiVersion: v1
+kind: Pod
+metadata:
+  name: pod-name
+  labels: 
+    label-key1: label-value1
+    label-key2: label-value2
+    label-key3: label-value3
+spec:
+  volumes:
+    - name: volume-name
+      emptyDir: {}
+  containers:
+    - name: container-name
+      image: image-name
+      ports:
+        - containerPort: 80
+      volumeMounts:
+        - mountPath: /app/volume
+          name: volume-name
