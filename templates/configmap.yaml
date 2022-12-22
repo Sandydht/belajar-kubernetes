@@ -1,0 +1,26 @@
+# Masalah dengan hardcode konfigurasi
+# - Saat kita meng hardcode environment variable di file yaml kubernetes, artinya kita harus siap - siap membuat file konfigurasi berbeda - beda tiap jenis environment
+# - Misal jika kita punya environment production, development, dan qa, kita harus membuat file untuk tiap environment
+# - Jika sampai kita lupa meng update file konfigurasi, maka kita bisa menggunakan konfigurasi environment yang salah
+
+# ConfigMap
+# - Kubernetes memiliki kemampuan memisahkan konfigurasi dalam object bernama ConfigMap
+# - Sederhananya, ConfigMap berisi konfigurasi key-value
+# - Aplikasi tidak perlu membaca konfigurasi langsung ke ConfigMap, melainkan Kubernetes akan mengirim konfigurasi di ConfigMap ke dalam environment variable di container
+
+# Membuat ConfigMap
+# - kubectl create -f filename.yaml
+
+# Melihat ConfigMap
+# - kubectl get configmaps
+# - kubectl describe configmap nameconfigmap
+
+# Menghapus ConfigMap
+# - kubectl delete configmap nameconfigmap
+
+apiVersion: v1
+kind: ConfigMap
+data:
+  ENV: VALUE
+metadata:
+  name: configmap-name

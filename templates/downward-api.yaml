@@ -1,0 +1,68 @@
+# Downward API
+# - Konfigurasi yang bisa kita set secara manual bisa ditangani dengan baik menggunakan ConfigMap dan secret, namun bagaimana dengan konfigurasi yang dinamis ? seperti informasi Pod dan Node ?
+# - Kubernetes memiliki Downward API. Downward API bisa memungkinkan kita mengambil informasi seputar Pod dan Node melalui environment variable
+# - Jangan bingung dengan kata API, Downward API sendiri bukan RESTFUL API, ini hanya cara untuk mendapatkan informasi seputar Pod dan Node
+
+# Metadata (1)
+# - requests.cpu: Jumlah CPU yang di request
+# - requests.memory: Jumlah memory yang di request
+# - limits.cpu: Jumlah limit maksimal CPU
+# - limits.memory: Jumlah limit maksimal memory
+
+# Metadata (2)
+# - metadata.name: nama pod
+# - metadata.namespace: namespace pod
+# - metadata.uid: id pod
+# - metdata.labels['<KEY>']: label pod
+# - metadata.annotations['<KEY>']: annotation pod
+
+# Metadata (3)
+# - status.podIP: IP address pod
+# - spec.serviceAccountName: nama service account pod
+# - spec.nodeName: nama node
+# - status.hostIP: IP address node
+
+apiVersion: apps/v1
+kind: ReplicaSet
+metadata:
+  name: nodejs-env
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      name: nodejs-env
+  template:
+    metadata:
+      name: nodejs-env
+      labels:
+        name: nodejs-env
+    spec:
+      containers:
+        - name: nodejs-env
+          image:  sandydht/nodejs-env
+          ports:
+            - containerPort: 3000
+          envFrom:
+            - configMapRef:
+                name: nodejs-env-config
+          env:
+            - name: POD_NAME
+              valueFrom:
+                fieldRef: 
+                  fieldPath: metadata.name
+            - name: POD_NAMESPACE
+              valueFrom: 
+                fieldRef: 
+                  fieldPath: metadata.namespace
+            - name: POD_IP
+              valueFrom:
+                fieldRef: 
+                  fieldPath: status.podIP
+            - name: POD_NODE
+              valueFrom:
+                fieldRef: 
+                  fieldPath: spec.nodeName
+            - name: POD_NODE_IP
+              valueFrom:
+                fieldRef: 
+                  fieldPath: status.hostIP
